@@ -6,6 +6,7 @@ import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import { useContext } from "react";
 import { tokenContext } from "./contexts/TokenAuth";
+import AddEditPost from "./pages/AddEditPost";
 
 function App() {
   const { authorisedUser, setAuthorisedUser } = useContext(tokenContext);
@@ -19,6 +20,7 @@ function App() {
           {authorisedUser && (
             <>
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/editor/:id" element={<AddEditPost />} />
             </>
           )}
         </Routes>
