@@ -1,9 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import moment from "moment";
 import SERVER_BASE_URL from "../services/serverURL";
 import { Link } from "react-router-dom";
+import { MdOutlineEdit } from "react-icons/md";
+import { IoMdRemoveCircleOutline } from "react-icons/io";
+import { deletePostAPI } from "../services/allAPI";
 
-const PostCard = ({ posts }) => {
+const PostCard = ({ posts, insideDashboard }) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleRemovePost = async (id) => {
+    confirm(`Are you sure to delete ${posts?.title} ?`);
+    if (confirm) {
+      setLoading(true);
+      const token = localStorage.getItem("token");
+      if (token) {
+        const reqHeader = {
+          Authorization: token,
+        };
+
+        //API CALL
+        try {
+          const result = await deletePostAPI(id, reqHeader);
+          if (result.status === 200) {
+            alert("Post removed !")
+          }
+        } catch (error) {
+          console.error(error)
+          setError("Unable to delete post. Please try again")
+        }
+      }
+    }
+  };
 
   return (
     <div>
@@ -27,10 +56,7 @@ const PostCard = ({ posts }) => {
                 ? `${posts?.description.slice(0, 150)}... `
                 : posts?.description}
               {posts?.description?.length > 150 && (
-                <Link
-                  to={`/post/${posts._id}`}
-                  className="text-blue-500"
-                >
+                <Link to={`/post/${posts._id}`} className="text-blue-500">
                   Read More
                 </Link>
               )}
@@ -43,6 +69,23 @@ const PostCard = ({ posts }) => {
               Posted {moment(posts?.createdAt).fromNow()}
             </p>
           </div>
+          {insideDashboard && (
+            <>
+              <div className="flex w-full justify-end gap-5 my-5 pe-2">
+                <button className="bg-blue-600 text-white px-3 py-1 flex items-center gap-2">
+                  <MdOutlineEdit />
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleRemovePost(posts?._id)}
+                  className="bg-red-500 text-white px-3 py-1 flex items-center gap-2"
+                >
+                  <IoMdRemoveCircleOutline />
+                  Remove
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

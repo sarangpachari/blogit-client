@@ -223,25 +223,22 @@ const Add = () => {
         {error && <p className="text-red-500 mt-3">{error}</p>}
 
         {/* SUBMIT SECTION */}
-        {/* SUBMIT BUTTON */}
-        <div className="flex justify-between mt-5">
-          <Button
+        <div className="flex justify-end md:gap-10 gap-2 my-5">
+          <button
             type="reset"
-            variant="text"
-            color="error"
+            className="w-[100px] p-2 hover:border"
             onClick={handleClearForm}
           >
             Clear
-          </Button>
-          <Button
+          </button>
+          <button
             type="submit"
-            variant="contained"
-            color="success"
+            className="w-[100px] border p-2 bg-white text-black"
             disabled={loading}
             onClick={handleSubmit}
           >
             {loading ? "Posting..." : "Post"}
-          </Button>
+          </button>
         </div>
       </form>
 

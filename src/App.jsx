@@ -19,7 +19,7 @@ function App() {
           <Route path="/register" element={<Signup />} />
           {authorisedUser && (
             <>
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard" element={<Dashboard insideDashboard={true} />} />
               <Route path="/editor/:id" element={<AddEditPost />} />
             </>
           )}

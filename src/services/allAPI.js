@@ -35,3 +35,8 @@ export const getUserPostsAPI = async (reqHeader) => {
 export const getAllPostsAPI = async()=>{
   return await commonAPI("GET",`${SERVER_BASE_URL}/api/posts/`)
 }
+
+//DELETE SINGLE POST
+export const deletePostAPI = async(id,reqHeader)=>{
+  return await commonAPI("DELETE", `${SERVER_BASE_URL}/api/posts/${id}/remove`,{},reqHeader)
+}
