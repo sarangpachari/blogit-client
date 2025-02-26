@@ -30,3 +30,8 @@ export const createPostAPI = async (reqBody, reqHeader) => {
 export const getUserPostsAPI = async (reqHeader) => {
   return await commonAPI("GET",`${SERVER_BASE_URL}/api/posts/dashboard`,{}, reqHeader);
 }
+
+//GET ALL POSTS API
+export const getAllPostsAPI = async()=>{
+  return await commonAPI("GET",`${SERVER_BASE_URL}/api/posts/`)
+}

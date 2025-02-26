@@ -4,12 +4,11 @@ import SERVER_BASE_URL from "../services/serverURL";
 import { Link } from "react-router-dom";
 
 const PostCard = ({ posts }) => {
-  console.log(posts);
-  const formattedTime = moment(posts?.createdAt).fromNow(true);
 
   return (
     <div>
-      <div className="w-full h-full bg-white flex md:flex-row flex-col gap-5">
+      <div className="lg:w-3/4 h-full bg-white flex md:flex-row flex-col gap-5">
+        {/* IMAGE SECTION */}
         <div className="md:w-1/3">
           <img
             src={`${SERVER_BASE_URL}/${posts?.thumbnail}`}
@@ -17,7 +16,8 @@ const PostCard = ({ posts }) => {
             alt="Thumbnail"
           />
         </div>
-        <div className="md:w-2/3 pt-5 px-3 flex flex-col justify-between">
+        {/* CONTENT SECTION */}
+        <div className="md:w-2/3 w-full pt-5 px-3 flex flex-col justify-between">
           {/* TITLE AND DESCRIPTION */}
           <div>
             <h1 className="text-2xl font-semibold">{posts?.title}</h1>
