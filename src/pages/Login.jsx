@@ -27,7 +27,6 @@ const Login = () => {
       try {
         setLoading(true);
         const result = await loginAPI(formData);
-        console.log(result);
         if (result.status == 200) {
           localStorage.setItem("user", JSON.stringify(result.data.user));
           localStorage.setItem("token", result.data.token);

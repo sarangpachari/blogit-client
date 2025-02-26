@@ -36,6 +36,7 @@ const Navbar = () => {
     localStorage.removeItem("token")
     localStorage.removeItem("user")
     setAuthorisedUser(false)
+    navigate("/")
   }
 
   useEffect(()=>{
