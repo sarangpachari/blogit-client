@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import moment from "moment";
 import SERVER_BASE_URL from "../services/serverURL";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineEdit } from "react-icons/md";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
 import { deletePostAPI, likePostAPI, unlikePostAPI } from "../services/allAPI";
 import { editPostShareContext } from "../contexts/EditPostContext";
 import { CiHeart } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
-import { postLikeContext, postUnlikeContext } from "../contexts/ContextShare";
+import { postLikeContext, postUnlikeContext, postViewContext } from "../contexts/ContextShare";
 
 const PostCard = ({ posts, insideDashboard }) => {
 
@@ -17,6 +17,9 @@ const PostCard = ({ posts, insideDashboard }) => {
 
   //POST UNLIKE RESPONSE
   const {postUnlikeResponse,setPostUnlikeResponse} = useContext(postUnlikeContext)
+
+  //POST VIEW DETAILS CONTEXT SHARE
+  const {postViewDetails,setPostViewDetails} = useContext(postViewContext)
 
   //CHECK USER AVAILABILITY
   const checkUserAvailable = () => {
@@ -27,11 +30,24 @@ const PostCard = ({ posts, insideDashboard }) => {
     }
   };
 
+
   const { setEditingPost } = useContext(editPostShareContext);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [userDetails, setUserDetails] = useState("");
+  
+  const navigate = useNavigate()
+
+  //HANDLE READ MORE CLICK
+  const handleReadMore = (post)=>{
+    if(!userDetails){
+      navigate("/login")
+    }else{
+      setPostViewDetails(post)
+      navigate(`/postView/${posts._id}`)
+    }
+  }
 
 
   //HANDLE REMOVE POST
@@ -132,9 +148,9 @@ const PostCard = ({ posts, insideDashboard }) => {
                 ? `${posts?.description.slice(0, 150)}... `
                 : posts?.description}
               {posts?.description?.length > 150 && (
-                <Link to={`/post/${posts._id}`} className="text-blue-500">
+                <button onClick={()=>handleReadMore(posts)} className="text-blue-500">
                   Read More
-                </Link>
+                </button>
               )}
             </p>
           </div>
@@ -176,7 +192,7 @@ const PostCard = ({ posts, insideDashboard }) => {
               {posts?.likedBy?.includes(userDetails) ? (
                 <button className="flex items-center" onClick={() => handleUnlikePost(posts?._id)}>
                   <p className="text-gray-600">{posts?.likeCount} Likes</p>
-                  <FaHeart size={30} className="m-2 text-red-500 animate-pulse" />
+                  <FaHeart size={20} className="m-2 text-red-500 animate-pulse" />
                 </button>
               ) : (
                 <button

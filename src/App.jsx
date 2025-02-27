@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import { useContext } from "react";
 import { tokenContext } from "./contexts/TokenAuth";
 import AddEditPost from "./pages/AddEditPost";
+import PostView from "./pages/PostView";
 
 function App() {
   const { authorisedUser, setAuthorisedUser } = useContext(tokenContext);
@@ -19,8 +20,12 @@ function App() {
           <Route path="/register" element={<Signup />} />
           {authorisedUser && (
             <>
-              <Route path="/dashboard" element={<Dashboard insideDashboard={true} />} />
+              <Route
+                path="/dashboard"
+                element={<Dashboard insideDashboard={true} />}
+              />
               <Route path="/editor/:id" element={<AddEditPost />} />
+              <Route path="/postView/:id" element={<PostView />} />
             </>
           )}
         </Routes>
