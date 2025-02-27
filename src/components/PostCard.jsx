@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import moment from "moment";
 import SERVER_BASE_URL from "../services/serverURL";
 import { Link } from "react-router-dom";
 import { MdOutlineEdit } from "react-icons/md";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
 import { deletePostAPI } from "../services/allAPI";
+import { editPostShareContext } from "../contexts/EditPostContext";
 
 const PostCard = ({ posts, insideDashboard }) => {
+
+  const { setEditingPost } = useContext(editPostShareContext)
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -24,15 +28,21 @@ const PostCard = ({ posts, insideDashboard }) => {
         try {
           const result = await deletePostAPI(id, reqHeader);
           if (result.status === 200) {
-            alert("Post removed !")
+            alert("Post removed !");
           }
         } catch (error) {
-          console.error(error)
-          setError("Unable to delete post. Please try again")
+          console.error(error);
+          setError("Unable to delete post. Please try again");
         }
       }
     }
   };
+
+  const handleEditPost = (post)=>{
+    console.log(setEditingPost);
+    
+    setEditingPost(post)
+  }
 
   return (
     <div>
@@ -72,10 +82,12 @@ const PostCard = ({ posts, insideDashboard }) => {
           {insideDashboard && (
             <>
               <div className="flex w-full justify-end gap-5 my-5 pe-2">
-                <button className="bg-blue-600 text-white px-3 py-1 flex items-center gap-2">
-                  <MdOutlineEdit />
-                  Edit
-                </button>
+                <Link to={`/editor/${posts?._id}`}>
+                  <button onClick={()=>handleEditPost(posts)} className="bg-blue-600 text-white px-3 py-1 flex items-center gap-2">
+                    <MdOutlineEdit />
+                    Edit
+                  </button>
+                </Link>
                 <button
                   onClick={() => handleRemovePost(posts?._id)}
                   className="bg-red-500 text-white px-3 py-1 flex items-center gap-2"
