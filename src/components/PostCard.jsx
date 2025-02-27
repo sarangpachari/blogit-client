@@ -1,19 +1,40 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import moment from "moment";
 import SERVER_BASE_URL from "../services/serverURL";
 import { Link } from "react-router-dom";
 import { MdOutlineEdit } from "react-icons/md";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
-import { deletePostAPI } from "../services/allAPI";
+import { deletePostAPI, likePostAPI, unlikePostAPI } from "../services/allAPI";
 import { editPostShareContext } from "../contexts/EditPostContext";
+import { CiHeart } from "react-icons/ci";
+import { FaHeart } from "react-icons/fa";
+import { postLikeContext, postUnlikeContext } from "../contexts/ContextShare";
 
 const PostCard = ({ posts, insideDashboard }) => {
 
-  const { setEditingPost } = useContext(editPostShareContext)
+  //POST LIKE RESPONSE
+  const {postLikeResponse,setPostLikeResponse} = useContext(postLikeContext)
+
+  //POST UNLIKE RESPONSE
+  const {postUnlikeResponse,setPostUnlikeResponse} = useContext(postUnlikeContext)
+
+  //CHECK USER AVAILABILITY
+  const checkUserAvailable = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const userId = JSON.parse(localStorage.getItem("user")).id;
+      setUserDetails(userId);
+    }
+  };
+
+  const { setEditingPost } = useContext(editPostShareContext);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [userDetails, setUserDetails] = useState("");
 
+
+  //HANDLE REMOVE POST
   const handleRemovePost = async (id) => {
     confirm(`Are you sure to delete ${posts?.title} ?`);
     if (confirm) {
@@ -38,11 +59,56 @@ const PostCard = ({ posts, insideDashboard }) => {
     }
   };
 
-  const handleEditPost = (post)=>{
+  //HANDLE EDIT POST
+  const handleEditPost = (post) => {
     console.log(setEditingPost);
-    
-    setEditingPost(post)
-  }
+
+    setEditingPost(post);
+  };
+
+  //HANDLE LIKE POST
+  const handleLikePost = async (id) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const reqHeader = {
+        Authorization: token,
+      };
+      try {
+        const result = await likePostAPI(id, reqHeader);
+        if (result.status === 200) {
+          setPostLikeResponse(result.data)
+        } else if (result.status === 400) {
+          alert("Already liked");
+        }
+      } catch (error) {
+        console.error(error);
+        setError("Unable to like post. Please try again");
+      }
+    }
+  };
+
+  //HANDLE UNLIKE POST
+  const handleUnlikePost = async (id) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const reqHeader = {
+        Authorization: token,
+      };
+      try {
+        const result = await unlikePostAPI(id, reqHeader);
+        if (result.status === 200) {
+          setPostUnlikeResponse(result.data)
+        }
+      } catch (error) {
+        console.error(error);
+        setError("Unable to unlike post. Please try again");
+      }
+    }
+  };
+
+  useEffect(() => {
+    checkUserAvailable();
+  }, []);
 
   return (
     <div>
@@ -79,11 +145,16 @@ const PostCard = ({ posts, insideDashboard }) => {
               Posted {moment(posts?.createdAt).fromNow()}
             </p>
           </div>
+
+          {/* FOR MANAGING POSTS */}
           {insideDashboard && (
             <>
               <div className="flex w-full justify-end gap-5 my-5 pe-2">
                 <Link to={`/editor/${posts?._id}`}>
-                  <button onClick={()=>handleEditPost(posts)} className="bg-blue-600 text-white px-3 py-1 flex items-center gap-2">
+                  <button
+                    onClick={() => handleEditPost(posts)}
+                    className="bg-blue-600 text-white px-3 py-1 flex items-center gap-2"
+                  >
                     <MdOutlineEdit />
                     Edit
                   </button>
@@ -97,6 +168,26 @@ const PostCard = ({ posts, insideDashboard }) => {
                 </button>
               </div>
             </>
+          )}
+
+          {/* FOR LIKE POST */}
+          {userDetails && (
+            <div className="w-full flex justify-end border-t-2 border-t-gray-200">
+              {posts?.likedBy?.includes(userDetails) ? (
+                <button className="flex items-center" onClick={() => handleUnlikePost(posts?._id)}>
+                  <p className="text-gray-600">{posts?.likeCount} Likes</p>
+                  <FaHeart size={30} className="m-2 text-red-500 animate-pulse" />
+                </button>
+              ) : (
+                <button
+                  className="flex items-center"
+                  onClick={() => handleLikePost(posts?._id)}
+                >
+                  <span className="animate-pulse text-red-600">Like it!</span>
+                  <CiHeart size={30} className="m-2 text" />
+                </button>
+              )}
+            </div>
           )}
         </div>
       </div>

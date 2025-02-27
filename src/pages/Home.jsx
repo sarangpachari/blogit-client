@@ -3,8 +3,15 @@ import Navbar from "../components/Navbar";
 import { tokenContext } from "../contexts/TokenAuth";
 import PostCard from "../components/PostCard";
 import { getAllPostsAPI } from "../services/allAPI";
+import { postLikeContext, postUnlikeContext } from "../contexts/ContextShare";
 
 const Home = () => {
+  //POST LIKE RESPONSE
+  const { postLikeResponse, setPostLikeResponse } = useContext(postLikeContext);
+
+  //POST UNLIKE RESPONSE
+  const {postUnlikeResponse,setPostUnlikeResponse} = useContext(postUnlikeContext)
+
   const { authorisedUser, setAuthorisedUser } = useContext(tokenContext);
   const [allPosts, setAllPosts] = useState([]);
   const [error, setError] = useState(null);
@@ -27,7 +34,7 @@ const Home = () => {
 
   useEffect(() => {
     getAllPosts();
-  }, [authorisedUser]);
+  }, [authorisedUser, postLikeResponse, postUnlikeResponse]);
   return (
     <div>
       <Navbar />
@@ -40,7 +47,9 @@ const Home = () => {
       </div>
       .{/* RECENT POSTS */}
       <div className="flex w-full flex-col gap-5 mb-20">
-        <p className="text-white text-xl md:text-3xl tracking-tight">Recent Blogs</p>
+        <p className="text-white text-xl md:text-3xl tracking-tight">
+          Recent Blogs
+        </p>
         {allPosts.length > 0 ? (
           allPosts.map((posts) => <PostCard key={posts?._id} posts={posts} />)
         ) : (

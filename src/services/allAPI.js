@@ -36,12 +36,22 @@ export const getAllPostsAPI = async()=>{
   return await commonAPI("GET",`${SERVER_BASE_URL}/api/posts/`)
 }
 
-//DELETE SINGLE POST
+//DELETE SINGLE POST API
 export const deletePostAPI = async(id,reqHeader)=>{
   return await commonAPI("DELETE", `${SERVER_BASE_URL}/api/posts/${id}/remove`,{},reqHeader)
 }
 
-//EDIT POST
+//EDIT POST API
 export const editPostAPI = async (id, reqBody, reqHeader) => {
   return await commonAPI("PUT", `${SERVER_BASE_URL}/api/posts/editor/${id}`,reqBody, reqHeader)
+}
+
+//LIKE POST API
+export const likePostAPI = async (id,reqHeader)=>{
+  return await commonAPI("PUT", `${SERVER_BASE_URL}/api/posts/${id}/like`,{},reqHeader)
+}
+
+//UNLIKE POST API
+export const unlikePostAPI = async(id,reqHeader)=>{
+  return await commonAPI("PUT", `${SERVER_BASE_URL}/api/posts/${id}/unlike`,{},reqHeader)
 }

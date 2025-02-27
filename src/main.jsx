@@ -5,14 +5,17 @@ import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import TokenAuth from "./contexts/TokenAuth.jsx";
 import EditPostContext from "./contexts/EditPostContext.jsx";
+import ContextShare from "./contexts/ContextShare.jsx";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <StrictMode>
       <TokenAuth>
-        <EditPostContext>
-          <App />
-        </EditPostContext>
+        <ContextShare>
+          <EditPostContext>
+            <App />
+          </EditPostContext>
+        </ContextShare>
       </TokenAuth>
     </StrictMode>
   </BrowserRouter>
