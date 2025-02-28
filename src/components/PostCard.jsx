@@ -18,8 +18,6 @@ const PostCard = ({ posts, insideDashboard }) => {
   //POST UNLIKE RESPONSE
   const {postUnlikeResponse,setPostUnlikeResponse} = useContext(postUnlikeContext)
 
-  //POST VIEW DETAILS CONTEXT SHARE
-  const {postViewDetails,setPostViewDetails} = useContext(postViewContext)
 
   //CHECK USER AVAILABILITY
   const checkUserAvailable = () => {
@@ -44,7 +42,6 @@ const PostCard = ({ posts, insideDashboard }) => {
     if(!userDetails){
       navigate("/login")
     }else{
-      setPostViewDetails(post)
       navigate(`/postView/${posts._id}`)
     }
   }

@@ -55,3 +55,19 @@ export const likePostAPI = async (id,reqHeader)=>{
 export const unlikePostAPI = async(id,reqHeader)=>{
   return await commonAPI("PUT", `${SERVER_BASE_URL}/api/posts/${id}/unlike`,{},reqHeader)
 }
+
+//COMMENT POST API
+export const commentPostAPI = async (id,reqBody,reqHeader)=>{
+  return await commonAPI("POST",`${SERVER_BASE_URL}/api/posts/postView/${id}/comment`,reqBody,reqHeader)
+}
+
+//GET A POST COMMENT API
+export const getPostCommentAPI = async (id,reqHeader)=>{
+  return await commonAPI("GET",`${SERVER_BASE_URL}/api/posts/postView/${id}/comment`,{},reqHeader)
+}
+
+//GET A POST DETAILS API
+export const getPostDetailsAPI = async (id,reqHeader)=>{
+  return await commonAPI("GET",`${SERVER_BASE_URL}/api/posts/postView/${id}`,{},reqHeader)
+}
+
