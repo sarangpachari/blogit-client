@@ -36,6 +36,12 @@ export const getAllPostsAPI = async()=>{
   return await commonAPI("GET",`${SERVER_BASE_URL}/api/posts/`)
 }
 
+//GET ALL POSTS WITH SEARCH API
+export const getAllPostsSearchAPI = async(reqHeader,searchKey)=>{
+  //QUERY PARAMETER = ?search=${searchKey} AND QUERY STORED IN 'search'
+  return await commonAPI("GET",`${SERVER_BASE_URL}/api/posts/all-blog?search=${searchKey}`,{},reqHeader)
+}
+
 //DELETE SINGLE POST API
 export const deletePostAPI = async(id,reqHeader)=>{
   return await commonAPI("DELETE", `${SERVER_BASE_URL}/api/posts/${id}/remove`,{},reqHeader)

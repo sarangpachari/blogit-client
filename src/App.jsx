@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
+import AllBlogs from "./pages/AllBlogs";
 import { useContext } from "react";
 import { tokenContext } from "./contexts/TokenAuth";
 import AddEditPost from "./pages/AddEditPost";
@@ -11,6 +12,7 @@ import PostView from "./pages/PostView";
 
 function App() {
   const { authorisedUser, setAuthorisedUser } = useContext(tokenContext);
+  
   return (
     <>
       <div className="mx-10">
@@ -26,6 +28,7 @@ function App() {
               />
               <Route path="/editor/:id" element={<AddEditPost />} />
               <Route path="/postView/:id" element={<PostView />} />
+              <Route path="/all-blog" element={<AllBlogs />} />
             </>
           )}
         </Routes>

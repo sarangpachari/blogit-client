@@ -8,6 +8,7 @@ import {
   getPostDetailsAPI,
 } from "../services/allAPI";
 import { useParams } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 const PostView = () => {
 
@@ -111,7 +112,8 @@ const PostView = () => {
 
   return (
     <div className="text-white">
-      <div className="py-10 flex flex-col gap-5">
+      <Navbar/>
+      <div className="pb-10 pt-5 flex flex-col gap-5 border-t-2">
         <div className="flex flex-col gap-2">
           <div className="flex justify-between items-center border-b-2 border-b-gray-700 pb-4">
             <div className="flex flex-col">

@@ -8,16 +8,22 @@ import { deletePostAPI, likePostAPI, unlikePostAPI } from "../services/allAPI";
 import { editPostShareContext } from "../contexts/EditPostContext";
 import { CiHeart } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
-import { postLikeContext, postUnlikeContext, postViewContext } from "../contexts/ContextShare";
+import {
+  postLikeContext,
+  postUnlikeContext,
+  postViewContext,
+} from "../contexts/ContextShare";
+import { tokenContext } from "../contexts/TokenAuth";
 
 const PostCard = ({ posts, insideDashboard }) => {
-
   //POST LIKE RESPONSE
-  const {postLikeResponse,setPostLikeResponse} = useContext(postLikeContext)
+  const { postLikeResponse, setPostLikeResponse } = useContext(postLikeContext);
 
   //POST UNLIKE RESPONSE
-  const {postUnlikeResponse,setPostUnlikeResponse} = useContext(postUnlikeContext)
+  const { postUnlikeResponse, setPostUnlikeResponse } =
+    useContext(postUnlikeContext);
 
+ 
 
   //CHECK USER AVAILABILITY
   const checkUserAvailable = () => {
@@ -28,24 +34,22 @@ const PostCard = ({ posts, insideDashboard }) => {
     }
   };
 
-
   const { setEditingPost } = useContext(editPostShareContext);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [userDetails, setUserDetails] = useState("");
-  
-  const navigate = useNavigate()
+
+  const navigate = useNavigate();
 
   //HANDLE READ MORE CLICK
-  const handleReadMore = (post)=>{
-    if(!userDetails){
-      navigate("/login")
-    }else{
-      navigate(`/postView/${posts._id}`)
+  const handleReadMore = (post) => {
+    if (!userDetails) {
+      navigate("/login");
+    } else {
+      navigate(`/postView/${posts._id}`);
     }
-  }
-
+  };
 
   //HANDLE REMOVE POST
   const handleRemovePost = async (id) => {
@@ -89,7 +93,7 @@ const PostCard = ({ posts, insideDashboard }) => {
       try {
         const result = await likePostAPI(id, reqHeader);
         if (result.status === 200) {
-          setPostLikeResponse(result.data)
+          setPostLikeResponse(result.data);
         } else if (result.status === 400) {
           alert("Already liked");
         }
@@ -110,7 +114,7 @@ const PostCard = ({ posts, insideDashboard }) => {
       try {
         const result = await unlikePostAPI(id, reqHeader);
         if (result.status === 200) {
-          setPostUnlikeResponse(result.data)
+          setPostUnlikeResponse(result.data);
         }
       } catch (error) {
         console.error(error);
@@ -122,6 +126,8 @@ const PostCard = ({ posts, insideDashboard }) => {
   useEffect(() => {
     checkUserAvailable();
   }, []);
+
+  
 
   return (
     <div>
@@ -145,7 +151,10 @@ const PostCard = ({ posts, insideDashboard }) => {
                 ? `${posts?.description.slice(0, 150)}... `
                 : posts?.description}
               {posts?.description?.length > 150 && (
-                <button onClick={()=>handleReadMore(posts)} className="text-blue-500">
+                <button
+                  onClick={() => handleReadMore(posts)}
+                  className="text-blue-500"
+                >
                   Read More
                 </button>
               )}
@@ -184,12 +193,21 @@ const PostCard = ({ posts, insideDashboard }) => {
           )}
 
           {/* FOR LIKE POST */}
-          {userDetails && (
-            <div className="w-full flex justify-end border-t-2 border-t-gray-200">
+          {userDetails ? (
+            <div className="w-full flex gap-2 items-center justify-end border-t-2 border-t-gray-200">
+              <p className="text-gray-600">
+                {posts?.comments?.length} Comments
+              </p>
               {posts?.likedBy?.includes(userDetails) ? (
-                <button className="flex items-center" onClick={() => handleUnlikePost(posts?._id)}>
+                <button
+                  className="flex items-center"
+                  onClick={() => handleUnlikePost(posts?._id)}
+                >
                   <p className="text-gray-600">{posts?.likeCount} Likes</p>
-                  <FaHeart size={20} className="m-2 text-red-500 animate-pulse" />
+                  <FaHeart
+                    size={20}
+                    className="m-2 text-red-500 animate-pulse"
+                  />
                 </button>
               ) : (
                 <button
@@ -200,6 +218,13 @@ const PostCard = ({ posts, insideDashboard }) => {
                   <CiHeart size={30} className="m-2 text" />
                 </button>
               )}
+            </div>
+          ) : (
+            <div className="w-full flex gap-2 text-sm py-2 justify-end border-t-2 border-t-gray-200">
+              <p className="text-gray-600">{posts?.likeCount} Likes</p>
+              <p className="text-gray-600">
+                {posts?.comments?.length} Comments
+              </p>
             </div>
           )}
         </div>

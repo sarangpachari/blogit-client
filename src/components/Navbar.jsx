@@ -5,21 +5,23 @@ import { Link, useNavigate } from "react-router-dom";
 import { tokenContext } from "../contexts/TokenAuth";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { MdDashboard } from "react-icons/md";
+import { MdLogout } from "react-icons/md";
 
 const Navbar = () => {
   const { authorisedUser, setAuthorisedUser } = useContext(tokenContext);
-  const [user, setUser] = useState(null)
-  const navigate=useNavigate()
-  
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
   //GET USER DETAILS
-  const userDetails = ()=>{
-    const storedUser=localStorage.getItem("user")
+  const userDetails = () => {
+    const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      setUser(JSON.parse(storedUser)) 
+      setUser(JSON.parse(storedUser));
     }
-    return null
-  }
-  
+    return null;
+  };
+
   //ANCHOR MENU
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -31,17 +33,19 @@ const Navbar = () => {
   };
 
   //LOGOUT
-  const handleLogout = ()=>{
-    handleClose()
-    localStorage.removeItem("token")
-    localStorage.removeItem("user")
-    setAuthorisedUser(false)
-    navigate("/")
-  }
+  const handleLogout = () => {
+    handleClose();
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setAuthorisedUser(false);
+    navigate("/");
+    window.location.href = "/";
+    window.location.reload();
+  };
 
-  useEffect(()=>{
-    userDetails()
-  },[authorisedUser])
+  useEffect(() => {
+    userDetails();
+  }, [authorisedUser]);
   return (
     <div className="text-white md:px-16 py-5">
       <nav>
@@ -49,19 +53,7 @@ const Navbar = () => {
           <div className="">
             <h1 className="font-bold tracking-widest text-2xl">BLOGIT</h1>
           </div>
-          <div className="">
-            <ul className="md:flex gap-5 hidden">
-              <li>
-                <Link to={"/"}>Home</Link>
-              </li>
-              <li>
-                <Link to={"/all-blog"}>All blogs</Link>
-              </li>
-              <li>
-                <Link to={"/about"}>About</Link>
-              </li>
-            </ul>
-          </div>
+
           <div>
             {authorisedUser ? (
               <>
@@ -86,8 +78,10 @@ const Navbar = () => {
                   }}
                 >
                   {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
-                  <Link to={"/dashboard"}><MenuItem onClick={handleClose}>My account</MenuItem></Link>
-                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                  <Link to={"/dashboard"}>
+                    <MenuItem className="flex gap-2" onClick={handleClose}><MdDashboard />Dashboard</MenuItem>
+                  </Link>
+                  <MenuItem className="flex gap-2" onClick={handleLogout}><MdLogout />Logout</MenuItem>
                 </Menu>
               </>
             ) : (
@@ -103,6 +97,18 @@ const Navbar = () => {
             )}
           </div>
         </div>
+        {authorisedUser && <div className="mt-5">
+          <div className="">
+            <ul className="flex gap-5">
+              <li>
+                <Link className="underline text-gray-300" to={"/"}>Home</Link>
+              </li>
+              <li>
+                <Link className="underline text-gray-300" to={"/all-blog"}>All blogs</Link>
+              </li>
+            </ul>
+          </div>
+        </div>}
       </nav>
     </div>
   );
