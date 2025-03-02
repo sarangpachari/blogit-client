@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -6,12 +6,17 @@ import PostCard from "../components/PostCard";
 import { getUserPostsAPI } from "../services/allAPI";
 import { FaPlus } from "react-icons/fa";
 import { FaArrowLeft } from "react-icons/fa";
+import { postDeleteContext } from "../contexts/ContextShare";
 
 const Dashboard = ({ insideDashboard }) => {
   const [userPosts, setUserPosts] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [isDashboard, setIsDashboard] = useState(false);
+
+   //POST DELETE RESPONSE
+    const { postDeleteResponse, setPostDeleteResponse } =
+      useContext(postDeleteContext);
 
   const getUserPosts = async () => {
     setLoading(true);
@@ -39,7 +44,7 @@ const Dashboard = ({ insideDashboard }) => {
 
   useEffect(() => {
     getUserPosts();
-  }, []);
+  }, [postDeleteResponse]);
 
   return (
     <div className="">

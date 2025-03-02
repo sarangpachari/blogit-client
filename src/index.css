@@ -7,3 +7,7 @@ html {
   font-family: "Jost", serif;
   font-optical-sizing: auto;
 }
+body{
+  overflow-x: hidden;
+}
+

@@ -7,6 +7,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { MdDashboard } from "react-icons/md";
 import { MdLogout } from "react-icons/md";
+import { motion } from "motion/react";
 
 const Navbar = () => {
   const { authorisedUser, setAuthorisedUser } = useContext(tokenContext);
@@ -66,8 +67,22 @@ const Navbar = () => {
                   aria-expanded={open ? "true" : undefined}
                   onClick={handleClick}
                 >
-                  Hi,<span>{user?.fullname}</span>
+                  <motion.span
+                    whileInView={{ opacity: 1, z: 0 }}
+                    initial={{ opacity: 0, z: -5 }}
+                    transition={{ duration: 1, delay: 1 }}
+                  >
+                    Hi,
+                  </motion.span>
+                  <motion.span
+                    whileInView={{ opacity: 1, z: 0 }}
+                    initial={{ opacity: 0, z: -5 }}
+                    transition={{ duration: 1, delay: 1.5 }}
+                  >
+                    {user?.fullname}
+                  </motion.span>
                 </Button>
+
                 <Menu
                   id="basic-menu"
                   anchorEl={anchorEl}
@@ -79,9 +94,15 @@ const Navbar = () => {
                 >
                   {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
                   <Link to={"/dashboard"}>
-                    <MenuItem className="flex gap-2" onClick={handleClose}><MdDashboard />Dashboard</MenuItem>
+                    <MenuItem onClick={handleClose}>
+                     
+                      Dashboard
+                    </MenuItem>
                   </Link>
-                  <MenuItem className="flex gap-2" onClick={handleLogout}><MdLogout />Logout</MenuItem>
+                  <MenuItem onClick={handleLogout}>
+                   
+                    Logout
+                  </MenuItem>
                 </Menu>
               </>
             ) : (
@@ -97,18 +118,32 @@ const Navbar = () => {
             )}
           </div>
         </div>
-        {authorisedUser && <div className="mt-5">
-          <div className="">
-            <ul className="flex gap-5">
-              <li>
-                <Link className="underline text-gray-300" to={"/"}>Home</Link>
-              </li>
-              <li>
-                <Link className="underline text-gray-300" to={"/all-blog"}>All blogs</Link>
-              </li>
-            </ul>
+        {authorisedUser && (
+          <div className="mt-5">
+            <div className="">
+              <motion.ul animate={{ opacity: 1 }} className="flex gap-5">
+                <motion.li
+                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: -50 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <Link className="underline text-gray-300" to={"/"}>
+                    Home
+                  </Link>
+                </motion.li>
+                <motion.li
+                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: -50 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                >
+                  <Link className="underline text-gray-300" to={"/all-blog"}>
+                    All blogs
+                  </Link>
+                </motion.li>
+              </motion.ul>
+            </div>
           </div>
-        </div>}
+        )}
       </nav>
     </div>
   );

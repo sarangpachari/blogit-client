@@ -9,11 +9,13 @@ import { editPostShareContext } from "../contexts/EditPostContext";
 import { CiHeart } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
 import {
+  postDeleteContext,
   postLikeContext,
   postUnlikeContext,
   postViewContext,
 } from "../contexts/ContextShare";
 import { tokenContext } from "../contexts/TokenAuth";
+import { motion } from "motion/react";
 
 const PostCard = ({ posts, insideDashboard }) => {
   //POST LIKE RESPONSE
@@ -23,7 +25,9 @@ const PostCard = ({ posts, insideDashboard }) => {
   const { postUnlikeResponse, setPostUnlikeResponse } =
     useContext(postUnlikeContext);
 
- 
+  //POST DELETE RESPONSE
+  const { postDeleteResponse, setPostDeleteResponse } =
+    useContext(postDeleteContext);
 
   //CHECK USER AVAILABILITY
   const checkUserAvailable = () => {
@@ -66,7 +70,7 @@ const PostCard = ({ posts, insideDashboard }) => {
         try {
           const result = await deletePostAPI(id, reqHeader);
           if (result.status === 200) {
-            alert("Post removed !");
+            setPostDeleteResponse(result.data);
           }
         } catch (error) {
           console.error(error);
@@ -127,10 +131,12 @@ const PostCard = ({ posts, insideDashboard }) => {
     checkUserAvailable();
   }, []);
 
-  
-
   return (
-    <div>
+    <motion.div
+      whileInView={{ opacity: 1, x: 0 }}
+      initial={{ opacity: 0, x: 100 }}
+      transition={{ duration: 1 }}
+    >
       <div className="lg:w-3/4 h-full bg-white flex md:flex-row flex-col gap-5">
         {/* IMAGE SECTION */}
         <div className="md:w-1/3">
@@ -229,7 +235,7 @@ const PostCard = ({ posts, insideDashboard }) => {
           )}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

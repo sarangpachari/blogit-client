@@ -4,13 +4,15 @@ import { tokenContext } from "../contexts/TokenAuth";
 import PostCard from "../components/PostCard";
 import { getAllPostsAPI } from "../services/allAPI";
 import { postLikeContext, postUnlikeContext } from "../contexts/ContextShare";
+import { motion } from "motion/react";
 
 const Home = () => {
   //POST LIKE RESPONSE
   const { postLikeResponse, setPostLikeResponse } = useContext(postLikeContext);
 
   //POST UNLIKE RESPONSE
-  const {postUnlikeResponse,setPostUnlikeResponse} = useContext(postUnlikeContext)
+  const { postUnlikeResponse, setPostUnlikeResponse } =
+    useContext(postUnlikeContext);
 
   const { authorisedUser, setAuthorisedUser } = useContext(tokenContext);
   const [allPosts, setAllPosts] = useState([]);
@@ -39,14 +41,34 @@ const Home = () => {
     <div>
       <Navbar />
       <div className="w-full h-[200px] md:h-[400px] flex flex-col justify-center items-center">
-        <hr className="border-2 w-11/12 border-white" />
-        <h1 className="text-white font-bold lg:text-9xl text-2xl md:text-5xl py-10">
+        <motion.hr
+          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, x: -100 }}
+          transition={{ duration: 1, delay: 1.2 }}
+          className="border-2 w-11/12 border-white"
+        />
+        <motion.h1
+          whileInView={{ opacity: 1, z: 0 }}
+          initial={{ opacity: 0, z: -5 }}
+          transition={{ duration: 1, delay: 2 }}
+          className="text-white font-bold lg:text-9xl text-2xl md:text-5xl py-10"
+        >
           SHOOT OUT BLOGS
-        </h1>
-        <hr className="border-2 w-11/12 border-white" />
+        </motion.h1>
+        <motion.hr
+          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, x: 100 }}
+          transition={{ duration: 1, delay: 1.2 }}
+          className="border-2 w-11/12 border-white"
+        />
       </div>
-      .{/* RECENT POSTS */}
-      <div className="flex w-full flex-col gap-5 mb-20">
+      {/* RECENT POSTS */}
+      <motion.div
+        whileInView={{ opacity: 1, z: 0 }}
+        initial={{ opacity: 0, z: -5 }}
+        transition={{ duration: 1, delay: 2.5 }}
+        className="flex w-full flex-col gap-5 mb-20"
+      >
         <p className="text-white text-xl md:text-3xl tracking-tight">
           Recent Blogs
         </p>
@@ -55,7 +77,7 @@ const Home = () => {
         ) : (
           <p>No Posts yet !</p>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 };

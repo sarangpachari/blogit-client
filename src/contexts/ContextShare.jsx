@@ -3,6 +3,7 @@ export const postLikeContext = createContext()
 export const postUnlikeContext = createContext()
 export const postViewContext = createContext()
 export const postCommentContext = createContext()
+export const postDeleteContext = createContext()
 
 
 const ContextShare = ({children}) => {
@@ -11,10 +12,11 @@ const ContextShare = ({children}) => {
     const [postUnlikeResponse,setPostUnlikeResponse] = useState("")
     const [postViewDetails,setPostViewDetails] = useState([])
     const [postCommentResponse,setPostCommentResponse] = useState("")
+    const [postDeleteResponse,setPostDeleteResponse] = useState("")
 
   return (
     <>
-    
+    <postDeleteContext.Provider value={{postDeleteResponse,setPostDeleteResponse}}>
     <postLikeContext.Provider value={{postLikeResponse,setPostLikeResponse}}>
         <postUnlikeContext.Provider value={{postUnlikeResponse,setPostUnlikeResponse}}>
             <postViewContext.Provider value={{postViewDetails,setPostViewDetails}}>
@@ -24,6 +26,7 @@ const ContextShare = ({children}) => {
             </postViewContext.Provider>
         </postUnlikeContext.Provider>
     </postLikeContext.Provider>
+    </postDeleteContext.Provider>
     </>
   )
 }
