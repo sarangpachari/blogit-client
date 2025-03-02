@@ -3,6 +3,15 @@
 html {
   scroll-behavior: smooth;
 }
+::-webkit-scrollbar{
+  width: 8px;
+}
+::-webkit-scrollbar-track{
+  background-color: #062ee0;
+}
+::-webkit-scrollbar-thumb{
+  background-color: #100650;
+}
 * {
   font-family: "Jost", serif;
   font-optical-sizing: auto;
