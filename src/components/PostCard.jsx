@@ -134,7 +134,7 @@ const PostCard = ({ posts, insideDashboard }) => {
   return (
     <motion.div
       whileInView={{ opacity: 1, x: 0 }}
-      initial={{ opacity: 0, x: 100 }}
+      initial={{ opacity: 0, x: -100 }}
       transition={{ duration: 1 }}
     >
       <div className="lg:w-3/4 h-full bg-white flex md:flex-row flex-col gap-5">
