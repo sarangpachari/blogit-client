@@ -136,7 +136,6 @@ const PostCard = ({ posts, insideDashboard }) => {
       whileInView={{ opacity: 1, x: 0 }}
       initial={{ opacity: 0, x: -100 }}
       transition={{ duration: 1 }}
-      onClick={() => handleReadMore(posts)}
       className="cursor-pointer"
     >
       <div className="lg:w-3/4 h-full bg-white flex md:flex-row flex-col gap-5">
@@ -158,14 +157,13 @@ const PostCard = ({ posts, insideDashboard }) => {
               {posts?.description?.length > 150
                 ? `${posts?.description.slice(0, 150)}... `
                 : posts?.description}
-              {posts?.description?.length > 150 && (
-                <button
-                  onClick={() => handleReadMore(posts)}
-                  className="text-blue-500"
-                >
-                  Read More
-                </button>
-              )}
+
+              <button
+                onClick={() => handleReadMore(posts)}
+                className="text-blue-500"
+              >
+                Read More
+              </button>
             </p>
           </div>
           {/* AUTHOR AND TIME */}
