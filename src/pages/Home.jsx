@@ -5,6 +5,7 @@ import PostCard from "../components/PostCard";
 import { getAllPostsAPI } from "../services/allAPI";
 import { postLikeContext, postUnlikeContext } from "../contexts/ContextShare";
 import { motion } from "motion/react";
+import { CircularProgress } from "@mui/material";
 
 const Home = () => {
   //POST LIKE RESPONSE
@@ -28,6 +29,7 @@ const Home = () => {
       } else {
         setError("Unable to Fetch Posts !");
       }
+      setLoading(false);
     } catch (error) {
       console.error(error);
       setError("Server Error. Unable to fetch !");
@@ -63,21 +65,37 @@ const Home = () => {
         />
       </div>
       {/* RECENT POSTS */}
-      <motion.div
-        whileInView={{ opacity: 1, z: 0 }}
-        initial={{ opacity: 0, z: -5 }}
-        transition={{ duration: 1, delay: 2.5 }}
-        className="flex w-full flex-col gap-5 mb-20"
-      >
-        <p className="text-white text-xl md:text-3xl tracking-tight">
-          Recent Blogs
-        </p>
-        {allPosts.length > 0 ? (
-          allPosts.map((posts) => <PostCard key={posts?._id} posts={posts} />)
-        ) : (
-          <p>No Posts yet !</p>
-        )}
-      </motion.div>
+      {loading ? (
+        <>
+          {error ? (
+            <>
+              {/* ERROR MESSAGE */}
+              <p className="text-red-500 mt-3">{error}</p>
+            </>
+          ) : (
+            <div className="w-full flex gap-5 flex-col justify-center items-center">
+              <CircularProgress color="info" />
+              <p className="text-white">Loading...Please Wait</p>
+            </div>
+          )}
+        </>
+      ) : (
+        <motion.div
+          whileInView={{ opacity: 1, z: 0 }}
+          initial={{ opacity: 0, z: -5 }}
+          transition={{ duration: 1, delay: 2.5 }}
+          className="flex w-full flex-col gap-5 mb-20"
+        >
+          <p className="text-white text-xl md:text-3xl tracking-tight">
+            Recent Blogs
+          </p>
+          {allPosts.length > 0 ? (
+            allPosts.map((posts) => <PostCard key={posts?._id} posts={posts} />)
+          ) : (
+            <p>No Posts yet !</p>
+          )}
+        </motion.div>
+      )}
     </div>
   );
 };

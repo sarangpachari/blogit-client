@@ -142,7 +142,7 @@ const PostCard = ({ posts, insideDashboard }) => {
         <div className="md:w-1/3">
           <img
             src={`${SERVER_BASE_URL}/${posts?.thumbnail}`}
-            className="w-full h-full md:h-64 object-cover"
+            className="w-full h-full object-cover"
             alt="Thumbnail"
           />
         </div>
