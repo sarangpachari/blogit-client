@@ -151,7 +151,12 @@ const PostCard = ({ posts, insideDashboard }) => {
         <div className="md:w-2/3 w-full pt-5 px-3 flex flex-col justify-between">
           {/* TITLE AND DESCRIPTION */}
           <div>
-            <h1 className="text-2xl font-semibold">{posts?.title}</h1>
+            <h1
+              onClick={() => handleReadMore(posts)}
+              className="text-2xl font-semibold"
+            >
+              {posts?.title}
+            </h1>
             {/* DESCRIPTION WITH READ MORE */}
             <p className="text-gray-600 mt-2">
               {posts?.description?.length > 150
